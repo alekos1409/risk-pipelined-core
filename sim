@@ -1,0 +1,43 @@
+#! /opt/homebrew/Cellar/icarus-verilog/13.0/bin/vvp
+:ivl_version "13.0 (stable)" "(v13_0)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision + 0;
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/system.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/vhdl_sys.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/vhdl_textio.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/v2005_math.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/va_math.vpi";
+S_0x102fd5260 .scope module, "register_file_test" "register_file_test" 2 1;
+ .timescale 0 0;
+v0x102fd9310_0 .var "i", 0 0;
+v0x102fd93d0_0 .net "o", 0 0, L_0x102fd94a0;  1 drivers
+S_0x102fd4710 .scope module, "uut" "register_file" 2 4, 3 1 0, S_0x102fd5260;
+ .timescale 0 0;
+    .port_info 0 /OUTPUT 1 "o";
+    .port_info 1 /INPUT 1 "i";
+L_0x102fd94a0 .functor NOT 1, v0x102fd9310_0, C4<0>, C4<0>, C4<0>;
+v0x102fd4890_0 .net "i", 0 0, v0x102fd9310_0;  1 drivers
+v0x102fd9260_0 .net "o", 0 0, L_0x102fd94a0;  alias, 1 drivers
+    .scope S_0x102fd5260;
+T_0 ;
+    %vpi_call 2 9 "$dumpfile", "register_file.vcd" {0 0 0};
+    %vpi_call 2 10 "$dumpvars", 32'sb00000000000000000000000000000000, S_0x102fd5260 {0 0 0};
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v0x102fd9310_0, 0, 1;
+    %delay 7, 0;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v0x102fd9310_0, 0, 1;
+    %end;
+    .thread T_0;
+    .scope S_0x102fd5260;
+T_1 ;
+    %delay 30, 0;
+    %vpi_call 2 14 "$finish" {0 0 0};
+    %end;
+    .thread T_1;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "testbenches/register_file_test.v";
+    "src/register_file.v";

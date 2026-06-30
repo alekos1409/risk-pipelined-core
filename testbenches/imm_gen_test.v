@@ -6,7 +6,8 @@ imm_gen uut(
 .imm_out(imm_out)
 );
 initial begin
-  instruction = 32'h02302000;  
+
+  instruction = 32'h010000ef;
   #1
 
  $display("imm = %b",imm_out);

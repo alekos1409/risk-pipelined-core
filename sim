@@ -7,37 +7,55 @@
 :vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/vhdl_textio.vpi";
 :vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/v2005_math.vpi";
 :vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/va_math.vpi";
-S_0x105570a20 .scope module, "imm_gen_test" "imm_gen_test" 2 1;
+S_0x104364a80 .scope module, "instr_mem_test" "instr_mem_test" 2 1;
  .timescale 0 0;
-v0x105575220_0 .net "imm_out", 31 0, L_0x105575640;  1 drivers
-v0x1055752c0_0 .var "instruction", 31 0;
-S_0x105570ba0 .scope module, "uut" "imm_gen" 2 4, 3 1 0, S_0x105570a20;
+v0x10436a570_0 .var "addr", 31 0;
+v0x10436a610_0 .net "instruction", 31 0, L_0x10436a9f0;  1 drivers
+S_0x1043628c0 .scope module, "uut" "instr_mem" 2 4, 3 1 0, S_0x104364a80;
  .timescale 0 0;
-    .port_info 0 /INPUT 32 "instruction";
-    .port_info 1 /OUTPUT 32 "imm_out";
-v0x105573b70_0 .net *"_ivl_3", 0 0, L_0x105575400;  1 drivers
-v0x10556e9d0_0 .net *"_ivl_5", 19 0, L_0x1055754a0;  1 drivers
-v0x10556ea80_0 .net *"_ivl_7", 11 0, L_0x1055755a0;  1 drivers
-v0x10556eb20_0 .net "imm_out", 31 0, L_0x105575640;  alias, 1 drivers
-v0x1055750e0_0 .net "imm_raw", 11 0, L_0x105575360;  1 drivers
-v0x105575180_0 .net "instruction", 31 0, v0x1055752c0_0;  1 drivers
-L_0x105575360 .part v0x1055752c0_0, 20, 12;
-L_0x105575400 .part v0x1055752c0_0, 31, 1;
-L_0x1055754a0 .repeat 20, 20, L_0x105575400;
-L_0x1055755a0 .part v0x1055752c0_0, 20, 12;
-L_0x105575640 .concat [ 12 20 0 0], L_0x1055755a0, L_0x1055754a0;
-    .scope S_0x105570a20;
+    .port_info 0 /INPUT 32 "addr";
+    .port_info 1 /OUTPUT 32 "instruction";
+L_0x10436a9f0 .functor BUFZ 32, L_0x10436a6b0, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>;
+v0x104364c00_0 .net *"_ivl_0", 31 0, L_0x10436a6b0;  1 drivers
+v0x104362ab0_0 .net *"_ivl_3", 9 0, L_0x10436a790;  1 drivers
+v0x10436a2f0_0 .net *"_ivl_4", 11 0, L_0x10436a890;  1 drivers
+L_0x73d454010 .functor BUFT 1, C4<00>, C4<0>, C4<0>, C4<0>;
+v0x104362b50_0 .net *"_ivl_7", 1 0, L_0x73d454010;  1 drivers
+v0x10436a390_0 .net "addr", 31 0, v0x10436a570_0;  1 drivers
+v0x10436a430_0 .net "instruction", 31 0, L_0x10436a9f0;  alias, 1 drivers
+v0x10436a4d0 .array "mem", 0 1023, 31 0;
+L_0x10436a6b0 .array/port v0x10436a4d0, L_0x10436a890;
+L_0x10436a790 .part v0x10436a570_0, 2, 10;
+L_0x10436a890 .concat [ 10 2 0 0], L_0x10436a790, L_0x73d454010;
+    .scope S_0x1043628c0;
 T_0 ;
-    %pushi/vec4 36708352, 0, 32;
-    %store/vec4 v0x1055752c0_0, 0, 32;
-    %delay 1, 0;
-    %vpi_call 2 12 "$display", "imm = %b", v0x105575220_0 {0 0 0};
-    %vpi_call 2 14 "$finish" {0 0 0};
+    %vpi_call 3 5 "$readmemh", "src/program.hex", v0x10436a4d0 {0 0 0};
     %end;
     .thread T_0;
+    .scope S_0x104364a80;
+T_1 ;
+    %pushi/vec4 0, 0, 32;
+    %store/vec4 v0x10436a570_0, 0, 32;
+    %delay 1, 0;
+    %vpi_call 2 12 "$display", "instruction = %b", v0x10436a610_0 {0 0 0};
+    %pushi/vec4 4, 0, 32;
+    %store/vec4 v0x10436a570_0, 0, 32;
+    %delay 1, 0;
+    %vpi_call 2 16 "$display", "instruction = %b", v0x10436a610_0 {0 0 0};
+    %pushi/vec4 8, 0, 32;
+    %store/vec4 v0x10436a570_0, 0, 32;
+    %delay 1, 0;
+    %vpi_call 2 20 "$display", "instruction = %b", v0x10436a610_0 {0 0 0};
+    %pushi/vec4 28, 0, 32;
+    %store/vec4 v0x10436a570_0, 0, 32;
+    %delay 1, 0;
+    %vpi_call 2 24 "$display", "instruction = %b", v0x10436a610_0 {0 0 0};
+    %vpi_call 2 26 "$finish" {0 0 0};
+    %end;
+    .thread T_1;
 # The file index is used to find the file name in the following table.
 :file_names 4;
     "N/A";
     "<interactive>";
-    "testbenches/imm_gen_test.v";
-    "src/imm_gen.v";
+    "testbenches/instr_mem_test.v";
+    "src/instr_mem.v";

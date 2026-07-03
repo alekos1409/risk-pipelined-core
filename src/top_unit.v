@@ -72,7 +72,5 @@ alu_control alu_control(
     .instruction(instruction),
     .ALUOp(ALUOp),
     .ALUcontrol(ALUcontrol)
-
 );
-
 endmodule

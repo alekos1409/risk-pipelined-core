@@ -1,20 +1,20 @@
 `include "src/control_unit.v"
 `include "src/imm_gen.v"
 `include "src/register_file.v"
-`include "alu_control.v"
-module decode(Imm_outE,PCD,PCplus4D,InstrD,RdD,PCE,RD1E,RD2E,
-imm_genE,PCplus4E,RegWriteW,clk,ResultW, RegWriteE,MemWriteE,JumpE,BranchE,
-ALUSrcE,MemReadE,MemToRegE,RdE,ALUOpE,RdW);
+`include "src/alu_control.v"
+module decode(reset,Imm_outE,PCD,PCplus4D,InstrD,RdD,PCE,RD1E,RD2E,PCplus4E,RegWriteW,clk,ResultW, RegWriteE,MemWriteE,JumpE,BranchE,
+ALUSrcE,MemReadE,MemToRegE,RdE,ALUOpE,RdW,ALUcontrolE);
 input [31:0]PCD,PCplus4D,InstrD,ResultW;
-input RegWriteW,clk;
+input RegWriteW,clk,reset;
 input [4:0] RdW;
-output [31:0]PCE,imm_genE,PCplus4E,RD1E,RD2E,Imm_outE;
-output [4:0]RdE;
-output RegWriteE,MemWriteE,JumpE,BranchE,ALUSrcE,MemReadE,MemToRegE;
-output [1:0]ALUOpE;
-output [2:0]ALUcontrolE;
+output reg [31:0]PCE,PCplus4E,RD1E,RD2E,Imm_outE;
+output reg [4:0]RdE;
+output reg RegWriteE,MemWriteE,JumpE,BranchE,ALUSrcE,MemReadE,MemToRegE;
+output reg [1:0]ALUOpE;
+output reg [2:0]ALUcontrolE;
 wire [31:0]Imm_outD,RD1D,RD2D;
-wire [4:0]RdD,a1,a2;
+input [4:0] RdD;
+wire [4:0]a1,a2;
 wire [6:0]op;
 wire [2:0]func3,ALUcontrolD;
 wire [1:0]ALUOpD;

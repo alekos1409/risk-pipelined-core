@@ -11,14 +11,14 @@ input clk;
 input [2:0]ALUcontrolE;
 output reg [31:0]ALuResultM,WriteDataM,PCplus4M ;
 output reg [4:0]RdM;
-output [31:0]PCTargetE,zero,slt;
-output PCSrcE,carry,negative,overflow;
+output [31:0]PCTargetE,slt;
+output PCSrcE,carry,negative,overflow,zero;
 output reg RegWriteM,MemWriteM,MemToRegM;
 wire [31:0]WriteDataE,Src1E,Src2E,ALuResultE;
 assign PCTargetE = PCE + Imm_outE;
-assign Src2E = ALUSrcE ? RD2E : Imm_outE;
+assign Src2E = ALUSrcE ? Imm_outE : RD2E;
 assign WriteDataE = RD2E;
-assign PCSrcE = (zero[0] & BranchE)| JumpE; 
+assign PCSrcE = (zero & BranchE)| JumpE; 
 alu alu(
 .a(RD1E),
 .b(Src2E),

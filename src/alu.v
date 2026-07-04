@@ -1,7 +1,8 @@
 module alu(a, b , ALUcontrol ,result, carry,zero,negative,overflow,slt);
 input [31:0]a,b;
 input [2:0]ALUcontrol;
-output [31:0]result,zero,slt;
+output [31:0]result,slt;
+output zero;
 output carry,negative,overflow;
 wire [31:0]a_and_b,a_or_b,not_b,wire_b,sum;
 wire cout,xnor_gate,xor_gate;

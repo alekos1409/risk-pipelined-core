@@ -2,7 +2,7 @@
 `include "src/imm_gen.v"
 `include "src/register_file.v"
 `include "src/alu_control.v"
-module decode(reset,Imm_outE,PCD,PCplus4D,InstrD,RdD,PCE,RD1E,RD2E,PCplus4E,RegWriteW,clk,ResultW, RegWriteE,MemWriteE,JumpE,BranchE,
+module decode(reset,Imm_outE,PCD,PCplus4D,InstrD,PCE,RD1E,RD2E,PCplus4E,RegWriteW,clk,ResultW, RegWriteE,MemWriteE,JumpE,BranchE,
 ALUSrcE,MemReadE,MemToRegE,RdE,ALUOpE,RdW,ALUcontrolE);
 input [31:0]PCD,PCplus4D,InstrD,ResultW;
 input RegWriteW,clk,reset;
@@ -13,7 +13,7 @@ output reg RegWriteE,MemWriteE,JumpE,BranchE,ALUSrcE,MemReadE,MemToRegE;
 output reg [1:0]ALUOpE;
 output reg [2:0]ALUcontrolE;
 wire [31:0]Imm_outD,RD1D,RD2D;
-input [4:0] RdD;
+wire [4:0] RdD;
 wire [4:0]a1,a2;
 wire [6:0]op;
 wire [2:0]func3,ALUcontrolD;

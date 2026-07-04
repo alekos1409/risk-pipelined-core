@@ -9,11 +9,11 @@ wire [1:0]ALUOpE;
 wire [2:0]ALUcontrolE;;
 wire PCSrcE,RegWriteW,RegWriteE,MemWriteE,JumpE,BranchE,ALUSrcE,
 MemReadE,MemToRegE,carry,negative,overflow,RegWriteM,
-MemWriteM,MemToRegM,MemToRegW;
+MemWriteM,MemToRegM,MemToRegW,zero;
 wire [4:0]RdW,RdE,RdM;
 wire [31:0]PCTargetE,InstrD,PCD,PCplus4D,
 ResultW,PCE,PCplus4E,RD1E,RD2E,Imm_outE,ALuResultM,WriteDataM,
-PCplus4M,zero,slt,PCplus4W,ALuResultW,ReadDataW;
+PCplus4M,slt,PCplus4W,ALuResultW,ReadDataW;
 fetch fetch(
 .clk(clk),
 .reset(reset),
@@ -52,7 +52,7 @@ execute execute(
     .PCE(PCE),
     .PCplus4E(PCplus4E),
     .RD1E(RD1E),
-    .RD2E(RD1E),
+    .RD2E(RD2E),
     .Imm_outE(Imm_outE),
     .RdE(RdE),
     .reset(reset),

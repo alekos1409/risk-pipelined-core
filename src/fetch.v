@@ -13,10 +13,13 @@ instr_mem instr_mem(
 );
 always @(posedge clk)begin
     if(reset)begin
-        PCF = 32'b0;
+        PCF <= 0;
+         InstrD<= 0;
+    PCD<=0;
+    PCplus4D<= 0;
     end
     else begin
-    PCF<=PCF_next;
+    PCF <= PCF_next;
     InstrD<= instruction;
     PCD<=PCF;
     PCplus4D<=PCPlus4F;

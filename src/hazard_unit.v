@@ -1,6 +1,5 @@
-module hazard_unit(reset,Rs1E,Rs2E,RdM,RdW,ForwardAE,ForwardBE,
+module hazard_unit(Rs1E,Rs2E,RdM,RdW,ForwardAE,ForwardBE,
 RegWriteM,RegWriteW,ALuResultM,ResultW,RD1E,RD2E,SrcAE,SrcBE);
-input reset;
 input [4:0]Rs1E,Rs2E,RdM,RdW;
 output [1:0]ForwardAE,ForwardBE;
 output [31:0] SrcAE,SrcBE;

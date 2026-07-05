@@ -8,7 +8,7 @@ input [31:0]PCD,PCplus4D,InstrD,ResultW;
 input RegWriteW,clk,reset;
 input [4:0] RdW;
 output reg [31:0]PCE,PCplus4E,RD1E,RD2E,Imm_outE;
-output reg [4:0]RdE;
+output reg [4:0]RdE,Rs1E,Rs2E;
 output reg RegWriteE,MemWriteE,JumpE,BranchE,ALUSrcE,MemReadE,MemToRegE;
 output reg [1:0]ALUOpE;
 output reg [2:0]ALUcontrolE;
@@ -25,6 +25,8 @@ assign RdD = InstrD[11:7];
 assign op = InstrD[6:0];
 assign func3 = InstrD[14:12];
 assign func7_5 = InstrD[30];
+assign Rs1E = a1;
+assign Rs2E = a2;
 
 register_file register_file(
     .clk(clk),

@@ -1,12 +1,11 @@
 `include "src/alu.v"
 module execute(RD1E,RD2E,RegWriteE,MemReadE,MemWriteE,MemToRegE,
 ALUSrcE,ALUcontrolE,PCE,PCplus4E,Imm_outE,RdE,JumpE,BranchE,
-ALUOpE,ALuResultM,WriteDataM,PCTargetE,slt,carry,negative,overflow,
+ALuResultM,WriteDataM,PCTargetE,slt,carry,negative,overflow,
 RdM,RegWriteM,MemWriteM,MemToRegM,PCplus4M,clk,PCSrcE,reset,zero);
 input [31:0]PCE,PCplus4E,RD1E,RD2E,Imm_outE;
 input [4:0]RdE;
 input reset,RegWriteE,MemWriteE,JumpE,BranchE,ALUSrcE,MemReadE,MemToRegE;
-input [1:0]ALUOpE;
 input clk;
 input [2:0]ALUcontrolE;
 output reg [31:0]ALuResultM,WriteDataM,PCplus4M ;

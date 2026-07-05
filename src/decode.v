@@ -3,12 +3,13 @@
 `include "src/register_file.v"
 `include "src/alu_control.v"
 module decode(reset,Imm_outE,PCD,PCplus4D,InstrD,PCE,RD1E,RD2E,PCplus4E,RegWriteW,clk,ResultW, RegWriteE,MemWriteE,JumpE,BranchE,
-ALUSrcE,MemReadE,MemToRegE,RdE,ALUOpE,RdW,ALUcontrolE);
+ALUSrcE,MemReadE,MemToRegE,RdE,ALUOpE,RdW,ALUcontrolE,Rs1E,Rs2E);
 input [31:0]PCD,PCplus4D,InstrD,ResultW;
 input RegWriteW,clk,reset;
 input [4:0] RdW;
 output reg [31:0]PCE,PCplus4E,RD1E,RD2E,Imm_outE;
-output reg [4:0]RdE,Rs1E,Rs2E;
+output reg [4:0]RdE;
+output reg [4:0]Rs1E,Rs2E;
 output reg RegWriteE,MemWriteE,JumpE,BranchE,ALUSrcE,MemReadE,MemToRegE;
 output reg [1:0]ALUOpE;
 output reg [2:0]ALUcontrolE;
@@ -25,8 +26,6 @@ assign RdD = InstrD[11:7];
 assign op = InstrD[6:0];
 assign func3 = InstrD[14:12];
 assign func7_5 = InstrD[30];
-assign Rs1E = a1;
-assign Rs2E = a2;
 
 register_file register_file(
     .clk(clk),
@@ -77,6 +76,8 @@ always @(posedge clk)begin
         PCplus4E   <= 0;
         RD1E       <= 0;
         RD2E       <= 0;
+        Rs1E <= 0;
+        Rs2E <= 0;
     end
     else begin
 RegWriteE<=RegWriteD;
@@ -94,6 +95,8 @@ PCE <= PCD;
 PCplus4E <= PCplus4D;
 RD1E <= RD1D;
 RD2E <= RD2D;
+Rs1E <= a1;
+Rs2E <= a2;
 end
 end
 endmodule

@@ -1,6 +1,6 @@
 `include "src/instr_mem.v"
-module fetch(clk,PCSrcE,PCplus4D,PCTargetE,InstrD,PCD,reset);
-input clk,PCSrcE,reset;
+module fetch(clk,PCSrcE,PCplus4D,PCTargetE,InstrD,PCD,reset,stallF,flushD);
+input clk,PCSrcE,reset,stallF,flushD;
 input [31:0]PCTargetE;
 output reg [31:0]InstrD,PCD,PCplus4D;
 wire [31:0]PCF_next,PCPlus4F,instruction;
@@ -18,8 +18,20 @@ always @(posedge clk)begin
     PCD<=0;
     PCplus4D<= 0;
     end
+    else if (flushD)begin
+            PCF <= PCF_next;
+         InstrD<= 0;
+    PCD<=0;
+    PCplus4D<= 0;
+    end
+    else if(stallF) begin
+    PCF<= PCF;
+    InstrD<= InstrD;
+    PCD<=PCD;
+    PCplus4D<=PCplus4D;
+    end
     else begin
-    PCF <= PCF_next;
+    PCF<= PCF_next;
     InstrD<= instruction;
     PCD<=PCF;
     PCplus4D<=PCPlus4F;

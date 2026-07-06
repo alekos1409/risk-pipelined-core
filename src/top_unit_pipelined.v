@@ -3,15 +3,17 @@
 `include "src/execute.v"
 `include "src/memory_access.v"
 `include "src/write_back.v"
-`include "src/hazard_unit.v"
+`include "src/hazard_forwarding_unit.v"
+`include "src/hazard_control_unit.v"
+
 module top_unit_pipelined(clk,reset);
 input clk,reset; 
 wire [1:0]ALUOpE,ForwardAE,ForwardBE;
 wire [2:0]ALUcontrolE;
 wire PCSrcE,RegWriteW,RegWriteE,MemWriteE,JumpE,BranchE,ALUSrcE,
 MemReadE,MemToRegE,carry,negative,overflow,RegWriteM,
-MemWriteM,MemToRegM,MemToRegW,zero;
-wire [4:0]RdW,RdE,RdM,Rs1E,Rs2E;
+MemWriteM,MemToRegM,MemToRegW,zero,flushE,stallF,flushD,stallD;
+wire [4:0]RdW,RdE,RdM,Rs1E,Rs2E,Rs1D,Rs2D;
 wire [31:0]PCTargetE,InstrD,PCD,PCplus4D,
 ResultW,PCE,PCplus4E,RD1E,RD2E,Imm_outE,ALuResultM,WriteDataM,
 PCplus4M,slt,PCplus4W,ALuResultW,ReadDataW,SrcAE,SrcBE;
@@ -22,7 +24,9 @@ fetch fetch(
 .PCTargetE(PCTargetE),
 .InstrD(InstrD),
 .PCD(PCD),
- .PCplus4D(PCplus4D)
+ .PCplus4D(PCplus4D),
+ .stallF(stallF),
+ .flushD(flushD)
 );
 decode decode(
 .clk(clk),
@@ -49,7 +53,10 @@ decode decode(
 .Imm_outE(Imm_outE),
 .InstrD(InstrD),
 .Rs1E(Rs1E),
-.Rs2E(Rs2E)
+.Rs2E(Rs2E),
+.Rs1D(Rs1D),
+.Rs2D(Rs2D),
+.flushE(flushE)
 );
 execute execute(
     .PCE(PCE),
@@ -81,7 +88,9 @@ execute execute(
     .overflow(overflow),
     .RegWriteM(RegWriteM),
     .MemWriteM(MemWriteM),
-    .MemToRegM(MemToRegM)
+    .MemToRegM(MemToRegM),
+    .SrcAE(SrcAE),
+    .SrcBE(SrcBE)
 );
 memory_access memory_access(
     .ALuResultM(ALuResultM),
@@ -106,7 +115,7 @@ write_back write_back(
 .ReadDataW(ReadDataW),
 .ALuResultW(ALuResultW)
 );
-hazard_unit hazard_unit(
+hazard_forwarding_unit hazard_unit(
     .RdM(RdM),
     .RdW(RdW),
     .Rs1E(Rs1E),
@@ -122,4 +131,15 @@ hazard_unit hazard_unit(
     .SrcAE(SrcAE),
     .SrcBE(SrcBE)
     );
+hazard_control_unit hazard_control_unit(
+    .RdE(RdE),
+    .flushD(flushD),
+    .flushE(flushE),
+    .stallD(stallD),
+    .stallF(stallF),
+    .Rs1D(Rs1D),
+    .Rs2D(Rs2D),
+    .MemReadE(MemReadE),
+    .PCSrcE(PCSrcE)
+);
 endmodule

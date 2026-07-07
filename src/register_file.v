@@ -14,13 +14,11 @@ initial begin
         regs[i] = 32'b0;
 end
 
-// Write port
 always @(posedge clk) begin
     if (we && rd_addr != 5'd0)
         regs[rd_addr] <= rd_data;
 end
 
-// Read bypass
 assign rs1_data = (we && (rd_addr == rs1_addr) && (rd_addr != 5'd0))
                 ? rd_data : regs[rs1_addr];
 

@@ -19,7 +19,7 @@ initial begin
     #1;
     $display("instruction = %b", instruction);
     
-    addr = 32'h0000001C;  // αυτό είναι 28 σε hex - μπορείς να επιβεβαιώσεις;
+    addr = 32'h0000001C;  
     #1;
     $display("instruction = %b", instruction);
     

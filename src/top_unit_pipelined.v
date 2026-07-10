@@ -5,9 +5,10 @@
 `include "src/write_back.v"
 `include "src/hazard_forwarding_unit.v"
 `include "src/hazard_control_unit.v"
-
-module top_unit_pipelined(clk,reset);
+`include "src/UART_rx.v"
+module top_unit_pipelined(clk,reset,tx);
 input clk,reset; 
+output tx;
 wire [1:0]ALUOpE,ForwardAE,ForwardBE;
 wire [2:0]ALUcontrolE;
 wire PCSrcE,RegWriteW,RegWriteE,MemWriteE,JumpE,BranchE,ALUSrcE,
@@ -107,7 +108,8 @@ memory_access memory_access(
     .ReadDataW(ReadDataW),
     .PCplus4W(PCplus4W),
     .ALuResultW(ALuResultW),
-    .RdW(RdW)
+    .RdW(RdW),
+    .tx(tx)
 );
 write_back write_back(
 .MemToRegW(MemToRegW),

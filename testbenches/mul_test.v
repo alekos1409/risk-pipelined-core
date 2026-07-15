@@ -21,8 +21,8 @@ initial begin
        reset = 0;
      @(posedge clk);
     reset = 0;
-    a=22;
-    b=3;
+    a=1;
+    b=2;
      start = 0;
        @(posedge clk);
     start = 1;

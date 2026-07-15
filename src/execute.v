@@ -1,4 +1,5 @@
 `include "src/alu.v"
+`include "src/mul.v"
 module execute (
     RD1E,
     RD2E,
@@ -31,33 +32,51 @@ module execute (
     reset,
     zero,
     SrcAE,
-    SrcBE
+    SrcBE,
+    done,
+    Result_M,
+    mulE,
+    mul_busy
 );
   input [31:0] PCE, PCplus4E, RD1E, RD2E, Imm_outE, SrcAE, SrcBE;
   input [4:0] RdE;
-  input reset, RegWriteE, MemWriteE, JumpE, BranchE, ALUSrcE, MemReadE, MemToRegE;
+  input reset, RegWriteE, MemWriteE, JumpE, BranchE, ALUSrcE, MemReadE, MemToRegE,mulE;
   input clk;
   input [2:0] ALUcontrolE;
   output reg [31:0] ALuResultM, WriteDataM, PCplus4M;
+  output [63:0] Result_M;
   output reg [4:0] RdM;
   output [31:0] PCTargetE, slt;
-  output PCSrcE, carry, negative, overflow, zero;
+  output PCSrcE, carry, negative, overflow, zero,done,mul_busy;
   output reg RegWriteM, MemWriteM, MemToRegM;
-  wire [31:0] WriteDataE, Src1E, Src2E, ALuResultE;
+  wire [31:0] WriteDataE, Src1E, Src2E, ALuResultE_A;
+  wire [31:0] ALuResultE;
   assign PCTargetE = PCE + Imm_outE;
   assign Src2E = ALUSrcE ? Imm_outE : SrcBE;
   assign WriteDataE = SrcBE;
   assign PCSrcE = (zero & BranchE) | JumpE;
+  assign ALuResultE = (mulE==1 & done!=0) ? Result_M[31:0]: ALuResultE_A;
+  assign mul_busy = mulE & ~done;
+
   alu alu (
       .a(SrcAE),
       .b(Src2E),
       .ALUcontrol(ALUcontrolE),
-      .result(ALuResultE),
+      .result(ALuResultE_A),
       .zero(zero),
       .slt(slt),
       .negative(negative),
       .carry(carry),
       .overflow(overflow)
+  );
+  mul mul(
+    .clk(clk),
+    .reset(reset),
+    .a(SrcAE),
+    .b(Src2E),
+    .done(done),
+    .start(mulE),
+    .Result(Result_M)
   );
   always @(posedge clk) begin
     if (reset) begin
@@ -69,6 +88,7 @@ module execute (
       MemWriteM <= 0;
       MemToRegM <= 0;
     end else begin
+      if(!mul_busy)begin
       ALuResultM <= ALuResultE;
       WriteDataM <= WriteDataE;
       RdM <= RdE;
@@ -76,6 +96,7 @@ module execute (
       RegWriteM <= RegWriteE;
       MemWriteM <= MemWriteE;
       MemToRegM <= MemToRegE;
+      end
     end
   end
 endmodule

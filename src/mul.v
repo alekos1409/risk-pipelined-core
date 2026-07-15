@@ -15,6 +15,7 @@ module mul (
   reg [63:0] a_in, b_in;
   reg [5:0] count = 32;
   reg done_in;
+  reg start_prev;
   always @(posedge clk) begin
     if (reset) begin
       a_in <= 0;
@@ -22,16 +23,18 @@ module mul (
       Result_in <= 0;
       count <= 32;
       done_in <= 0;
+        start_prev <= 0;
     end else begin
-      case (start)
-        1'b0: begin
+        start_prev <= start;
+        if (start && !start_prev) begin
           a_in <= a;
           b_in <= b;
           Result_in <= 0;
           count <= 32;
           done_in <= 0;
         end
-        1'b1: begin
+        else begin
+       if (start)
           if (count != 6'b0) begin
             if (b_in[0] == 1'b1) begin
               Result_in <= Result_in + a_in;
@@ -48,7 +51,6 @@ module mul (
             done_in <= 1;
           end
         end
-      endcase
     end
   end
   assign Result = Result_in;

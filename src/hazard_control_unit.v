@@ -7,9 +7,10 @@ module hazard_control_unit (
     flushD,
     flushE,
     stallD,
-    stallF
+    stallF,
+    mul_busy
 );
-  input PCSrcE, MemReadE;
+  input PCSrcE, MemReadE, mul_busy;
   input [4:0] Rs1D, Rs2D, RdE;
   output flushD, flushE, stallD, stallF;
   reg LoadUseHazard;
@@ -21,7 +22,7 @@ module hazard_control_unit (
     end else LoadUseHazard = 1'b0;
   end
   assign flushD = PCSrcE;
-  assign flßushE = PCSrcE | LoadUseHazard;
-  assign stallD = LoadUseHazard;
-  assign stallF = LoadUseHazard;
+  assign flushE = PCSrcE | LoadUseHazard;
+  assign stallD = LoadUseHazard | mul_busy;
+  assign stallF = LoadUseHazard | mul_busy;
 endmodule

@@ -17,11 +17,12 @@ module top_unit_pipelined (
   wire [2:0] ALUcontrolE;
   wire PCSrcE,RegWriteW,RegWriteE,MemWriteE,JumpE,BranchE,ALUSrcE,
 MemReadE,MemToRegE,carry,negative,overflow,RegWriteM,
-MemWriteM,MemToRegM,MemToRegW,zero,flushE,stallF,flushD,stallD;
+MemWriteM,MemToRegM,MemToRegW,zero,flushE,stallF,flushD,stallD,mulD,mulE,mul_busy,done;
   wire [4:0] RdW, RdE, RdM, Rs1E, Rs2E, Rs1D, Rs2D;
   wire [31:0]PCTargetE,InstrD,PCD,PCplus4D,
 ResultW,PCE,PCplus4E,RD1E,RD2E,Imm_outE,ALuResultM,WriteDataM,
 PCplus4M,slt,PCplus4W,ALuResultW,ReadDataW,SrcAE,SrcBE;
+wire [63:0] Result_M;
   fetch fetch (
       .clk(clk),
       .reset(reset),
@@ -61,7 +62,9 @@ PCplus4M,slt,PCplus4W,ALuResultW,ReadDataW,SrcAE,SrcBE;
       .Rs2E(Rs2E),
       .Rs1D(Rs1D),
       .Rs2D(Rs2D),
-      .flushE(flushE)
+      .flushE(flushE),
+      .mulE(mulE),
+      .mul_busy(mul_busy)
   );
   execute execute (
       .PCE(PCE),
@@ -95,7 +98,11 @@ PCplus4M,slt,PCplus4W,ALuResultW,ReadDataW,SrcAE,SrcBE;
       .MemWriteM(MemWriteM),
       .MemToRegM(MemToRegM),
       .SrcAE(SrcAE),
-      .SrcBE(SrcBE)
+      .SrcBE(SrcBE),
+      .mulE(mulE),
+      .Result_M(Result_M),
+      .mul_busy(mul_busy),
+      .done(done)
   );
   memory_access memory_access (
       .ALuResultM(ALuResultM),
@@ -146,6 +153,7 @@ PCplus4M,slt,PCplus4W,ALuResultW,ReadDataW,SrcAE,SrcBE;
       .Rs1D(Rs1D),
       .Rs2D(Rs2D),
       .MemReadE(MemReadE),
-      .PCSrcE(PCSrcE)
+      .PCSrcE(PCSrcE),
+      .mul_busy(mul_busy)
   );
 endmodule

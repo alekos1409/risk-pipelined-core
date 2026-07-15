@@ -30,29 +30,30 @@ module decode (
     Rs2E,
     Rs1D,
     Rs2D,
-    flushE
+    flushE,
+    mulE,
+    mul_busy
 );
   input [31:0] PCD, PCplus4D, InstrD, ResultW;
-  input RegWriteW, clk, reset, flushE;
+  input RegWriteW, clk, reset, flushE,mul_busy;
   input [4:0] RdW;
   output reg [31:0] PCE, PCplus4E, RD1E, RD2E, Imm_outE;
   output reg [4:0] RdE;
   output reg [4:0] Rs1E, Rs2E;
-  output reg RegWriteE, MemWriteE, JumpE, BranchE, ALUSrcE, MemReadE, MemToRegE;
+  output reg RegWriteE, MemWriteE, JumpE, BranchE, ALUSrcE, MemReadE, MemToRegE, mulE;
   output reg [1:0] ALUOpE;
   output reg [2:0] ALUcontrolE;
   wire [31:0] Imm_outD, RD1D, RD2D;
   wire [4:0] RdD;
   output [4:0] Rs1D, Rs2D;
   wire [6:0] op;
-  wire [2:0] func3, ALUcontrolD;
+  wire [2:0]  ALUcontrolD;
   wire [1:0] ALUOpD;
-  wire func7_5, MemReadD, RegWriteD, MemWriteD, JumpD, BranchD, ALUSrcD, MemToRegD;
+  wire func7_5, MemReadD, RegWriteD, MemWriteD, JumpD, BranchD, ALUSrcD, MemToRegD,mulD;
   assign Rs1D = InstrD[19:15];
   assign Rs2D = InstrD[24:20];
   assign RdD = InstrD[11:7];
   assign op = InstrD[6:0];
-  assign func3 = InstrD[14:12];
   assign func7_5 = InstrD[30];
 
   register_file register_file (
@@ -85,7 +86,8 @@ module decode (
   alu_control alu_control (
       .instruction(InstrD),
       .ALUOp(ALUOpD),
-      .ALUcontrol(ALUcontrolD)
+      .ALUcontrol(ALUcontrolD),
+      .mulD(mulD)
   );
   always @(posedge clk) begin
     if (reset) begin
@@ -106,7 +108,9 @@ module decode (
       RD2E        <= 0;
       Rs1E        <= 0;
       Rs2E        <= 0;
-    end else begin
+      mulE        <=0;
+    end 
+    else begin
       if (flushE) begin
         RegWriteE   <= 0;
         MemWriteE   <= 0;
@@ -117,7 +121,30 @@ module decode (
         ALUOpE      <= 0;
         ALUSrcE     <= 0;
         MemToRegE   <= 0;
-      end else begin
+        mulE        <=0;
+      end 
+    else if(mul_busy) begin
+      RegWriteE   <= RegWriteE ;
+      MemWriteE   <= MemWriteE;
+      MemReadE    <= MemReadE ;
+      JumpE       <= JumpE;
+      BranchE     <= BranchE ;
+      ALUcontrolE <= ALUcontrolE;
+      ALUOpE      <= ALUOpE ;
+      ALUSrcE     <=  ALUSrcE ;
+      MemToRegE   <= MemToRegE ;
+      RdE         <= RdE;
+      Imm_outE    <=  Imm_outE ;
+      PCE         <= PCE ;
+      PCplus4E    <= PCplus4E;
+      RD1E        <= RD1E ;
+      RD2E        <= RD2E;
+      Rs1E        <=  Rs1E ;
+      Rs2E        <= Rs2E ;
+      mulE        <= mulE ;
+    end
+
+      else begin
         RegWriteE <= RegWriteD;
         MemWriteE <= MemWriteD;
         MemReadE <= MemReadD;
@@ -135,6 +162,7 @@ module decode (
         RD2E <= RD2D;
         Rs1E <= Rs1D;
         Rs2E <= Rs2D;
+        mulE <= mulD;
       end
     end
   end

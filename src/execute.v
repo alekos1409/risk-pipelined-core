@@ -1,5 +1,5 @@
 `include "src/alu.v"
-`include "src/mul.v"
+`include "src/mul_2.v"
 module execute (
     RD1E,
     RD2E,
@@ -69,7 +69,7 @@ module execute (
       .carry(carry),
       .overflow(overflow)
   );
-  mul mul(
+  mul_2 mul_2(
     .clk(clk),
     .reset(reset),
     .a(SrcAE),

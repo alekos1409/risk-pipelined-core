@@ -9,10 +9,10 @@ module UART_tx (
   input clk, MemWriteM_UART, reset;
   input [7:0] data_in;
   output reg tx, busy;
-  reg [7:0] shift_reg;
-  reg [2:0] bit_counter;
+  reg [7:0] shift_reg;//αποθηκεύονται τα data
+  reg [2:0] bit_counter;//μετράει πάσα bit περνάνε(8bit)
   parameter idle = 2'b0, start = 2'b01, data = 2'b10, stop = 2'b11;
-  parameter CLKS_PER_BIT = 4;
+  parameter CLKS_PER_BIT = 10417;// συγχρωνισμός με τη ταχύτητα του fpga
   reg [7:0] cycle_counter;
   reg [1:0] state = idle;
   always @(posedge clk) begin

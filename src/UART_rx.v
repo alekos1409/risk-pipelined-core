@@ -6,13 +6,13 @@ module UART_rx (
     byte_valid
 );
   input clk, reset, tx;
-  parameter idle = 2'b00, start = 2'b01, data_out = 2'b10, stop = 2'b11;
-  parameter CLKS_PER_BIT = 4;
+  parameter idle = 2'b00, start = 2'b01, rx_data_read = 2'b10, stop = 2'b11;
+  parameter CLKS_PER_BIT = 10417;
   reg [7:0] cycle_counter;
   reg [1:0] state;
-  output reg [7:0] received_byte;
+  output reg [7:0] received_byte;//βγάζει τα δεδομένα
   reg [2:0] bit_counter;
-  output reg byte_valid;
+  output reg byte_valid;//επιβεβαιώνει ότι έφτασαν τα δεδομένα
   always @(posedge clk) begin
     if (reset) begin
       received_byte <= 0;
@@ -30,11 +30,11 @@ module UART_rx (
         start: begin
           if (cycle_counter == CLKS_PER_BIT / 2 - 1) begin
             cycle_counter <= 0;
-            state <= data_out;
+            state <= data_read;
           end else cycle_counter <= cycle_counter + 1;
         end
 
-        data_out: begin
+        data_read: begin
           received_byte[bit_counter] <= tx;
           if (cycle_counter == CLKS_PER_BIT - 1) begin
             cycle_counter <= 0;

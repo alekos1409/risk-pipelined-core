@@ -4,11 +4,11 @@ module hazard_control_unit (
     Rs1D,
     Rs2D,
     MemReadE,
-    flushD,
+    flushD,//delete the data at decode 
     flushE,
-    stallD,
+    stallD,//freeze the data at decode
     stallF,
-    mul_busy
+    mul_busy//freeze the data to do the mul(32clocks)
 );
   input PCSrcE, MemReadE, mul_busy;
   input [4:0] Rs1D, Rs2D, RdE;

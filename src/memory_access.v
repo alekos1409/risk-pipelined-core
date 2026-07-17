@@ -48,7 +48,7 @@ data_UART,data_out,ReadDataM_out;
       .address_UART(address_UART),
       .MemWriteM_UART(MemWriteM_UART),
       .UART_busy(UART_busy),
-      .ReadDataM(ReadDataM_out),
+      .ReadDataMem(ReadDataM_out),
       .data_out(ReadDataM_in)
   );
   UART_tx UART_tx (

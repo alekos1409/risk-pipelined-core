@@ -15,7 +15,7 @@ module mul (
   reg [63:0] a_in, b_in;
   reg [5:0] count = 32;
   reg done_in;
-  reg start_prev;
+  reg start_prev; // για να φορτωσει της τιμες πριν αρχισει
   always @(posedge clk) begin
     if (reset) begin
       a_in <= 0;

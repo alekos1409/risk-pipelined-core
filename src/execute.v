@@ -36,7 +36,8 @@ module execute (
     done,
     Result_M,
     mulE,
-    mul_busy
+    mul_busy,
+    MemReadM
 );
   input [31:0] PCE, PCplus4E, RD1E, RD2E, Imm_outE, SrcAE, SrcBE;
   input [4:0] RdE;
@@ -47,7 +48,7 @@ module execute (
   output [63:0] Result_M;
   output reg [4:0] RdM;
   output [31:0] PCTargetE, slt;
-  output PCSrcE, carry, negative, overflow, zero,done,mul_busy;
+  output PCSrcE, carry, negative, overflow, zero,done,mul_busy,MemReadM;
   output reg RegWriteM, MemWriteM, MemToRegM;
   wire [31:0] WriteDataE, Src1E, Src2E, ALuResultE_A;
   wire [31:0] ALuResultE;
@@ -87,6 +88,7 @@ module execute (
       RegWriteM <= 0;
       MemWriteM <= 0;
       MemToRegM <= 0;
+      MemReadM <= 0;
     end else begin
       if(!mul_busy)begin
       ALuResultM <= ALuResultE;
@@ -96,6 +98,7 @@ module execute (
       RegWriteM <= RegWriteE;
       MemWriteM <= MemWriteE;
       MemToRegM <= MemToRegE;
+      MemReadM <= MemReadE;
       end
     end
   end

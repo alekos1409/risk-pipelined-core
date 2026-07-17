@@ -8,8 +8,8 @@ module alu_control (
   input [1:0] ALUOp;
   wire [2:0] func3;
   output  reg [2:0] ALUcontrol;
-  output reg mulD;
-  wire func7_5;
+  output reg mulD; //To do multiplication(decode)
+  wire func7_5;//add and sub
   wire [6:0]func7;
   assign func7 = instruction[31:25];
   assign func7_5 = instruction[30];

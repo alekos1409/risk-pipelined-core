@@ -1,4 +1,4 @@
-//διαβάζει τα δεδομένα
+//διαβάζει τα δεδομένα που έρχονται από το fpga μέσω του UART και τα στέλνει στον επεξεργαστή
 module UART_rx (
     clk,
     reset,
@@ -31,11 +31,11 @@ module UART_rx (
         start: begin
           if (cycle_counter == CLKS_PER_BIT / 2 - 1) begin
             cycle_counter <= 0;
-            state <= data_read;
+            state <= rx_data_read;
           end else cycle_counter <= cycle_counter + 1;
         end
 
-        data_read: begin
+        rx_data_read: begin
           received_byte[bit_counter] <= tx;
           if (cycle_counter == CLKS_PER_BIT - 1) begin
             cycle_counter <= 0;

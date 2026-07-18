@@ -48,8 +48,8 @@ module execute (
   output [63:0] Result_M;
   output reg [4:0] RdM;
   output [31:0] PCTargetE, slt;
-  output PCSrcE, carry, negative, overflow, zero,done,mul_busy,MemReadM;
-  output reg RegWriteM, MemWriteM, MemToRegM;
+  output PCSrcE, carry, negative, overflow, zero,done,mul_busy;
+  output reg RegWriteM, MemWriteM, MemToRegM,MemReadM;
   wire [31:0] WriteDataE, Src1E, Src2E, ALuResultE_A;
   wire [31:0] ALuResultE;
   assign PCTargetE = PCE + Imm_outE;

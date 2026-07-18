@@ -6,19 +6,19 @@
 `include "src/write_back.v"
 `include "src/hazard_forwarding_unit.v"
 `include "src/hazard_control_unit.v"
-`include "src/UART_rx.v"
 module top_unit_pipelined (
     clk,
     reset,
-    tx
+    tx,
+    rx
 );
-  input clk, reset;
+  input clk, reset, rx;
   output tx;
   wire [1:0] ALUOpE, ForwardAE, ForwardBE;
   wire [2:0] ALUcontrolE;
   wire PCSrcE,RegWriteW,RegWriteE,MemWriteE,JumpE,BranchE,ALUSrcE,
 MemReadE,MemToRegE,carry,negative,overflow,RegWriteM,
-MemWriteM,MemToRegM,MemToRegW,zero,flushE,stallF,flushD,stallD,mulD,mulE,mul_busy,done;
+MemWriteM,MemToRegM,MemToRegW,zero,flushE,stallF,flushD,stallD,mulD,mulE,mul_busy,done,MemReadM;
   wire [4:0] RdW, RdE, RdM, Rs1E, Rs2E, Rs1D, Rs2D;
   wire [31:0]PCTargetE,InstrD,PCD,PCplus4D,
 ResultW,PCE,PCplus4E,RD1E,RD2E,Imm_outE,ALuResultM,WriteDataM,
@@ -103,7 +103,8 @@ wire [63:0] Result_M;
       .mulE(mulE),
       .Result_M(Result_M),
       .mul_busy(mul_busy),
-      .done(done)
+      .done(done),
+      .MemReadM(MemReadM)
   );
   memory_access memory_access (
       .ALuResultM(ALuResultM),
@@ -121,7 +122,9 @@ wire [63:0] Result_M;
       .PCplus4W(PCplus4W),
       .ALuResultW(ALuResultW),
       .RdW(RdW),
-      .tx(tx)
+      .tx(tx),
+      .MemReadM(MemReadM),
+      .rx(rx)
   );
   write_back write_back (
       .MemToRegW(MemToRegW),

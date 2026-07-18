@@ -11,4 +11,6 @@ _start:
     mul  x3, x1, x2
 
     .option pop
+    sw x4 , 0(x3)
+    lw x5 , 0(x4)
     j    _start

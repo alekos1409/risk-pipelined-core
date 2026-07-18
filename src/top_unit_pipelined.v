@@ -1,3 +1,4 @@
+//Ενώνει όλα τα κομμάτια για να φτιαχτεί το pipeline
 `include "src/fetch.v"
 `include "src/decode.v"
 `include "src/execute.v"

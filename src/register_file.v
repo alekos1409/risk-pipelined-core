@@ -1,3 +1,4 @@
+//Παίρνει τις οδηγίες και βγάζει τις πληροφορίες
 module register_file (
     input we,
     input clk,

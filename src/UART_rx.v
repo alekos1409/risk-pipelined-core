@@ -1,3 +1,4 @@
+//διαβάζει τα δεδομένα
 module UART_rx (
     clk,
     reset,

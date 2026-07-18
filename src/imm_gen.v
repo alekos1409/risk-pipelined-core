@@ -1,3 +1,4 @@
+//Παίρεν το imm από τις οδηγίες και το κάνει extention 
 module imm_gen (
     instruction,
     imm_out

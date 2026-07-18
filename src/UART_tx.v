@@ -1,3 +1,4 @@
+//στέλνει τα δεδομένα προς τα έξω 
 module UART_tx (
     clk,
     MemWriteM_UART,

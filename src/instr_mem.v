@@ -1,3 +1,4 @@
+//παίρνει την διεύθυνση από το pc και βγάζει την οδηγίαß
 module instr_mem (
     addr,
     instruction

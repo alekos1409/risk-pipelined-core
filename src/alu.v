@@ -1,10 +1,11 @@
+//Κεντρική μονάδα εκτέλεσης πράξεωνß
 module alu (
     a,
     b,
     ALUcontrol,
     result,
     carry,
-    zero,
+    zero,//χρησιμοποιήται για την συνθήκη branchß
     negative,
     overflow,
     slt

@@ -1,3 +1,4 @@
+//χρησιμοποιήτε για να διαλέξει ποιά περιφεριακά θα ακούσει ή που θα γράψει. Είναι ανάμεσα στο memory access και στο data memory
 module bus_interconnect (
     address,
     data_in,

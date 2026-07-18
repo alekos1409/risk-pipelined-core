@@ -1,3 +1,4 @@
+//ελέγχει ποιές πράξεις θα κάνει η ALU με βάση τις οδηγίες
 module alu_control (
     instruction,
     ALUOp,

@@ -1,7 +1,7 @@
-`include "src/control_unit.v"
-`include "src/imm_gen.v"
-`include "src/register_file.v"
-`include "src/alu_control.v"
+`include "src/core/control_unit.v"
+`include "src/core/imm_gen.v"
+`include "src/core/register_file.v"
+`include "src/core/alu_control.v"
 module decode (
     reset,
     Imm_outE,

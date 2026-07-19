@@ -1,11 +1,11 @@
 //Ενώνει όλα τα κομμάτια για να φτιαχτεί το pipeline
-`include "src/fetch.v"
-`include "src/decode.v"
-`include "src/execute.v"
-`include "src/memory_access.v"
-`include "src/write_back.v"
-`include "src/hazard_forwarding_unit.v"
-`include "src/hazard_control_unit.v"
+`include "src/pipeline/fetch.v"
+`include "src/pipeline/decode.v"
+`include "src/pipeline/execute.v"
+`include "src/pipeline/memory_access.v"
+`include "src/pipeline/write_back.v"
+`include "src/hazard/hazard_forwarding_unit.v"
+`include "src/hazard/hazard_control_unit.v"
 module top_unit_pipelined (
     clk,
     reset,

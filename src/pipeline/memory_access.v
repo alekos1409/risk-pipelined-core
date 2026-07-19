@@ -1,8 +1,8 @@
-`include "src/data_memory.v"
+`include "src/core/data_memory.v"
 `include "src/bus_interconnect.v"
-`include "src/UART_tx.v"
-`include "src/UART_rx.v"
-`include "src/UART_rx_mmio.v"
+`include "src/UART/UART_tx.v"
+`include "src/UART/UART_rx.v"
+`include "src/UART/UART_rx_mmio.v"
 module memory_access (
     ALuResultM,
     WriteDataM,

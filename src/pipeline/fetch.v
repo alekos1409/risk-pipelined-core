@@ -1,4 +1,4 @@
-`include "src/instr_mem.v"
+`include "src/core/instr_mem.v"
 module fetch (
     clk,
     PCSrcE,

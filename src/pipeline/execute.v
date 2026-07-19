@@ -1,5 +1,5 @@
-`include "src/alu.v"
-`include "src/mul_2.v"
+`include "src/core/alu.v"
+`include "src/core/mul_2.v"
 module execute (
     RD1E,
     RD2E,

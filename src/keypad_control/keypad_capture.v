@@ -7,9 +7,10 @@ module keypad_capture(
     operand_A,
     operand_B,
     dec,
-    compute_trigger 
+    compute_trigger,
+    trigger_clear 
     );
-input clk,reset,switch1,switch2,switch3;
+input clk,reset,switch1,switch2,switch3,trigger_clear;
 input [3:0]dec;
 output reg [15:0]operand_A,operand_B;
 output reg  compute_trigger ;
@@ -22,7 +23,6 @@ switch2_sync <= switch2;
 switch3_sync <= switch3;
 end
 always @(posedge clk)begin
-    compute_trigger <= 0;
     if(reset)begin
         operand_A <= 0;
         operand_B <= 0;
@@ -37,6 +37,9 @@ always @(posedge clk)begin
     if(switch3_sync & ~switch3_prev)begin
         compute_trigger <=1;
     end
+        else if(trigger_clear)begin
+        compute_trigger <=0;
     end
-end
+    end
+    end
 endmodule

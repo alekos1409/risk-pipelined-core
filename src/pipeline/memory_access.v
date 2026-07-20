@@ -26,7 +26,8 @@ module memory_access (
     display_r,
     operand_A,
     operand_B,
-    compute_trigger
+    compute_trigger,
+    trigger_clear
 );
   input [31:0] ALuResultM, WriteDataM, PCplus4M;
   input [4:0] RdM;
@@ -34,7 +35,7 @@ module memory_access (
   input clk, reset;
   input MemWriteM, MemToRegM, RegWriteM, MemReadM,compute_trigger;
   input rx;//φυσική σύνδεση με fpga
-  output tx;
+  output tx,trigger_clear;
   output [15:0]display_r;
   output reg RegWriteW, MemToRegW;
   output reg [31:0] ReadDataW, PCplus4W, ALuResultW;
@@ -42,7 +43,8 @@ module memory_access (
   wire [15:0] data_display;
   wire [31:0]ReadDataMem_in,address_data_memory,data_data_memory,address_UART,
 data_UART,data_out,ReadDataMem_out,UART_rx_byte;
-  wire MemWriteM_data_memory, MemWriteM_UART, UART_busy,byte_valid,rx_full,rx_data_read,MemWriteM_display;
+  wire MemWriteM_data_memory, MemWriteM_UART, UART_busy,byte_valid,rx_full,
+  rx_data_read,MemWriteM_display;
   wire [7:0]received_byte;
   reg rx_sync1, rx_sync2;//για να συγχρονίσει το rx με το ρολόι του επεξεργαστή
   data_memory data_memory (
@@ -73,7 +75,8 @@ data_UART,data_out,ReadDataMem_out,UART_rx_byte;
       .data_display(data_display),
       .operand_A(operand_A),
       .operand_B(operand_B),
-      .compute_trigger(compute_trigger)
+      .compute_trigger(compute_trigger),
+      .trigger_clear(trigger_clear)
   );
   UART_tx UART_tx (
       .clk(clk),

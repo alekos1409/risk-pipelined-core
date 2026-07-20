@@ -20,7 +20,8 @@ module bus_interconnect (
     MemWriteM_display,//γραφει τα δεδομενα από το keypad
     operand_A,
     operand_B,
-    compute_trigger
+    compute_trigger,
+    trigger_clear
 );
   input [31:0] address;
   input [31:0] data_in, data_out,UART_rx_byte ;
@@ -29,7 +30,7 @@ module bus_interconnect (
   output reg[15:0]data_display;
   output reg [31:0] data_data_memory, data_UART;
   output reg [31:0] address_data_memory, address_UART, ReadDataMem;
-  output reg MemWriteM_data_memory, MemWriteM_UART,rx_data_read, MemWriteM_display;
+  output reg MemWriteM_data_memory, MemWriteM_UART,rx_data_read, MemWriteM_display,trigger_clear;
   always @(*) begin
     address_data_memory = 0;
     data_data_memory = 0;
@@ -41,6 +42,7 @@ module bus_interconnect (
     rx_data_read = 0;
     data_display = 0;
     MemWriteM_display = 0;
+    trigger_clear = 0;
     if (address == 32'h80000004) // UART busy status register
     begin
       ReadDataMem = {31'b0, UART_busy};
@@ -69,6 +71,7 @@ module bus_interconnect (
     end
     else if(address == 32'h8000001c)begin
      ReadDataMem = {31'b0, compute_trigger};
+     trigger_clear = MemWriteM;
     end
       else begin
       address_UART = address;

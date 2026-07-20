@@ -1,4 +1,4 @@
-`include "src/keypad_control/seg7_contol.v"
+`include "src/keypad_control/seg7_control.v"
 module seg7_display(clk,result,an,seg);
 input clk;
 input [15:0]result;
@@ -10,7 +10,7 @@ reg [19:0] scan_timer = 0;
 assign current_nibble = (digit_select == 2'b00) ? result[3:0]:
                         (digit_select == 2'b01) ? result[7:4]:
                         (digit_select == 2'b10) ? result[11:8]:
-                        (digit_select == 2'b11) ? result[15:12];
+                         result[15:12];
 always @(posedge clk)begin
     if(scan_timer == 50_000) begin
         scan_timer <= 0;

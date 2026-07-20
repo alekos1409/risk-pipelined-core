@@ -1,4 +1,4 @@
-//Ενώνει όλα τα κομμάτια για να φτιαχτεί το pipeline
+//Ενώνει όλα τα κομμάτια για να φτιαχτεί το pipeline,UART
 `include "src/pipeline/fetch.v"
 `include "src/pipeline/decode.v"
 `include "src/pipeline/execute.v"
@@ -6,19 +6,35 @@
 `include "src/pipeline/write_back.v"
 `include "src/hazard/hazard_forwarding_unit.v"
 `include "src/hazard/hazard_control_unit.v"
+`include "src/keypad_control/decoder_keypad.v"
+`include "src/keypad_control/seg7_display.v"
+`include "src/keypad_control/keypad_capture.v"
 module top_unit_pipelined (
     clk,
     reset,
     tx,
-    rx
+    rx,
+    col,
+    row,
+    an,
+    seg,
+    switch1,
+    switch2,
+    switch3
 );
-  input clk, reset, rx;
+  input clk, reset, rx, switch1, switch2,switch3;
+  input [3:0]row;
   output tx;
+  output [3:0] col,an;
+  output [6:0]seg;
+  wire [15:0]display_r,operand_A,operand_B;
   wire [1:0] ALUOpE, ForwardAE, ForwardBE;
-  wire [2:0] ALUcontrolE;
+  wire [2:0] ALUcontrolE; 
+  wire [3:0]dec_out;
   wire PCSrcE,RegWriteW,RegWriteE,MemWriteE,JumpE,BranchE,ALUSrcE,
 MemReadE,MemToRegE,carry,negative,overflow,RegWriteM,
-MemWriteM,MemToRegM,MemToRegW,zero,flushE,stallF,flushD,stallD,mulD,mulE,mul_busy,done,MemReadM;
+MemWriteM,MemToRegM,MemToRegW,zero,flushE,stallF,flushD,stallD,mulD,mulE,
+mul_busy,done,MemReadM,compute_trigger;
   wire [4:0] RdW, RdE, RdM, Rs1E, Rs2E, Rs1D, Rs2D;
   wire [31:0]PCTargetE,InstrD,PCD,PCplus4D,
 ResultW,PCE,PCplus4E,RD1E,RD2E,Imm_outE,ALuResultM,WriteDataM,
@@ -124,7 +140,11 @@ wire [63:0] Result_M;
       .RdW(RdW),
       .tx(tx),
       .MemReadM(MemReadM),
-      .rx(rx)
+      .rx(rx),
+      .display_r(display_r),
+      .operand_A(operand_A),
+      .operand_B(operand_B),
+      .compute_trigger(compute_trigger)
   );
   write_back write_back (
       .MemToRegW(MemToRegW),
@@ -159,5 +179,28 @@ wire [63:0] Result_M;
       .MemReadE(MemReadE),
       .PCSrcE(PCSrcE),
       .mul_busy(mul_busy)
+  );
+  decoder_keypad decoder_keypad(
+        .clk(clk),
+        .row(row),
+        .col(col),
+        .dec_out(dec_out)
+    );
+  seg7_display seg7_display(
+        .clk(clk),
+        .result(display_r),
+        .an(an),
+        .seg(seg)
+  );
+  keypad_capture keypad_capture(
+    .clk(clk),
+    .reset(reset),
+    .switch1(switch1),
+    .switch2(switch2),
+    .switch3(switch3),
+    .operand_A(operand_A),
+    .operand_B(operand_B),
+    .compute_trigger(compute_trigger),
+    .dec(dec_out)
   );
 endmodule

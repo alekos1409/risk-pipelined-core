@@ -1,4 +1,4 @@
-module keypad_decoder (clk,row,col,dec_out);
+module decoder_keypad(clk,row,col,dec_out);
 input clk;
     input [3:0] row;
      output reg [3:0] col;

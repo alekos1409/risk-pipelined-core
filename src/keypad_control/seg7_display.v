@@ -4,7 +4,7 @@ input clk;
 input [15:0]result;
 output reg [3:0]an;
 output [6:0]seg;
-reg [1:0]digit_select;
+reg [1:0]digit_select = 0;
 wire [3:0]current_nibble;
 reg [19:0] scan_timer = 0;
 assign current_nibble = (digit_select == 2'b00) ? result[3:0]:

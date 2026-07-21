@@ -15,6 +15,8 @@ module alu_control (
   assign func7 = instruction[31:25];
   assign func7_5 = instruction[30];
   assign func3 = instruction[14:12];
+  wire [6:0] opcode;
+assign opcode = instruction[6:0];
   always @(*) begin
     ALUcontrol = 3'b000;
     mulD = 1'b0;
@@ -38,6 +40,7 @@ module alu_control (
     endcase
   end
   1'b1: begin
+    if(opcode == 7'b0110011)
     mulD = 1'b1;
 
   end

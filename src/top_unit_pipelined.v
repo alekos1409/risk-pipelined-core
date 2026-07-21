@@ -34,7 +34,7 @@ module top_unit_pipelined (
   wire PCSrcE,RegWriteW,RegWriteE,MemWriteE,JumpE,BranchE,ALUSrcE,
 MemReadE,MemToRegE,carry,negative,overflow,RegWriteM,
 MemWriteM,MemToRegM,MemToRegW,zero,flushE,stallF,flushD,stallD,mulD,mulE,
-mul_busy,done,MemReadM,compute_trigger,trigger_clear;
+mul_busy,done,MemReadM,compute_trigger,trigger_clear,decode_valid;
   wire [4:0] RdW, RdE, RdM, Rs1E, Rs2E, Rs1D, Rs2D;
   wire [31:0]PCTargetE,InstrD,PCD,PCplus4D,
 ResultW,PCE,PCplus4E,RD1E,RD2E,Imm_outE,ALuResultM,WriteDataM,
@@ -183,9 +183,11 @@ wire [63:0] Result_M;
   );
   decoder_keypad decoder_keypad(
         .clk(clk),
+        .reset(reset),
         .row(row),
         .col(col),
-        .dec_out(dec_out)
+        .dec_out(dec_out),
+        .decode_valid(decode_valid)
     );
   seg7_display seg7_display(
         .clk(clk),
@@ -203,6 +205,8 @@ wire [63:0] Result_M;
     .operand_B(operand_B),
     .compute_trigger(compute_trigger),
     .dec(dec_out),
-    .trigger_clear(trigger_clear)
+    .trigger_clear(trigger_clear),
+    .decode_valid(decode_valid)
   );
+ 
 endmodule

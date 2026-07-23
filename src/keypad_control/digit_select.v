@@ -13,7 +13,7 @@ module digit_select (
   always @(posedge clk) begin
     if (switch1 == 0 && decode_valid) begin
       number_in[3:0] <= dec;
-    end else if (decode_valid) number_in[7:4] <= dec;ß
+    end else if (decode_valid) number_in[7:4] <= dec;
   end
   assign number = number_in;
 endmodule

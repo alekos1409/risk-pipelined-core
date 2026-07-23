@@ -1,4 +1,4 @@
-module Capture_numbes(
+module Capture_numbers_test(
     clk,
     number,
     operant_A,

@@ -9,6 +9,7 @@
 `include "src/keypad_control/decoder_keypad.v"
 `include "src/keypad_control/seg7_display.v"
 `include "src/keypad_control/keypad_capture.v"
+`include "src/keypad_control/digit_select.v"
 module top_unit_pipelined (
     clk,
     reset,
@@ -25,12 +26,17 @@ module top_unit_pipelined (
   input clk, reset, rx, switch1, switch2,switch3;
   input [3:0]row;
   output tx;
-  output [3:0] col,an;
+  output [3:0] col;
+  output [7:0] an;
   output [6:0]seg;
-  wire [15:0]display_r,operand_A,operand_B;
+  wire [15:0]display_r;
+  wire [7:0]operand_A,operand_B;
+  wire [7:0] wire_number;
+  wire [3:0] wire_dec;
   wire [1:0] ALUOpE, ForwardAE, ForwardBE;
   wire [2:0] ALUcontrolE; 
   wire [3:0]dec_out;
+  wire  decode_valid;
   wire PCSrcE,RegWriteW,RegWriteE,MemWriteE,JumpE,BranchE,ALUSrcE,
 MemReadE,MemToRegE,carry,negative,overflow,RegWriteM,
 MemWriteM,MemToRegM,MemToRegW,zero,flushE,stallF,flushD,stallD,mulD,mulE,
@@ -183,28 +189,31 @@ wire [63:0] Result_M;
   );
   decoder_keypad decoder_keypad(
         .clk(clk),
-        .reset(reset),
         .row(row),
         .col(col),
-        .dec_out(dec_out)
+        .dec_out(wire_dec),
+        .decode_valid(decode_valid)
     );
   seg7_display seg7_display(
-        .clk(clk),
-        .result(display_r),
-        .an(an),
-        .seg(seg)
+       .clk(clk),
+      .number(wire_number),
+      .seg(seg),
+      .an(an)
   );
   keypad_capture keypad_capture(
     .clk(clk),
-    .reset(reset),
-    .switch1(switch1),
+    .number(wire_number),
+    .operant_A(operant_A),
+    .operant_B(operant_B),
     .switch2(switch2),
-    .switch3(switch3),
-    .operand_A(operand_A),
-    .operand_B(operand_B),
-    .compute_trigger(compute_trigger),
-    .dec(dec_out),
-    .trigger_clear(trigger_clear)
+    .switch3(switch3)
   );
- 
+ digit_select digit_select(
+.clk(clk),
+.switch1(switch1),
+.switch2(switch2),
+.number(wire_number),
+.dec(wire_dec),
+.decode_valid(decode_valid)
+);
 endmodule

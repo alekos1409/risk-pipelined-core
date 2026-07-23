@@ -1,4 +1,4 @@
-module digit_select_test(
+module digit_select(
     clk,
     number,
     switch1,

@@ -1,4 +1,4 @@
-module seg7_display(clk,number,an,seg);
+module seg7_display_test(clk,number,an,seg);
 input clk;
 input [7:0]number;
 output reg [7:0]an;
@@ -23,3 +23,8 @@ always @(posedge clk)begin
     1'b1: an <= 8'b11111101;  
     endcase
 end
+seg7_control_test seg7_control_test(
+    .seg(current_nibble),
+    .seg(seg)
+);
+endmodule

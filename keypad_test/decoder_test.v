@@ -1,4 +1,4 @@
-module decoder(clk,row,col,dec_out, decode_valid);
+module decoder_test(clk,row,col,dec_out, decode_valid);
 input clk;
     input [3:0] row;
      output reg [3:0] col;

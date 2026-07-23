@@ -1,4 +1,4 @@
-module seg7_contol (
+module seg7_control (
   dec,
   seg
 );

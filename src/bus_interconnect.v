@@ -25,7 +25,7 @@ module bus_interconnect (
 );
   input [31:0] address;
   input [31:0] data_in, data_out,UART_rx_byte ;
-  input [15:0]operand_A,operand_B;
+  input [7:0]operand_A,operand_B;
   input MemWriteM, UART_busy,MemReadM,rx_full,compute_trigger;
   output reg[15:0]data_display;
   output reg [31:0] data_data_memory, data_UART;
@@ -64,10 +64,10 @@ module bus_interconnect (
       MemWriteM_display = MemWriteM;
     end
     else if(address == 32'h80000014)begin
-     ReadDataMem  = {16'b0, operand_A};
+     ReadDataMem  = {24'b0, operand_A};
     end
     else if(address == 32'h80000018)begin
-     ReadDataMem = {16'b0,operand_B};
+     ReadDataMem = {24'b0,operand_B};
     end
     else if(address == 32'h8000001c)begin
      ReadDataMem = {31'b0, compute_trigger};
